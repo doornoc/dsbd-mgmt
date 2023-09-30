@@ -31,4 +31,4 @@ END
 fi
 
 #python manage.py migrate
-gunicorn --bind 0.0.0.0:8000 -w 2 dsbd.wsgi:application
+gunicorn --bind 0.0.0.0:8000 -w 2 mgmt.wsgi:application
