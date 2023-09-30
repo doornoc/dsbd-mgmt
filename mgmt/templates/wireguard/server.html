@@ -2,8 +2,12 @@
 {% block content %}
     <h2 class="card-title">Wireguardサーバ</h2>
     <br/>
-    <a class="btn btn-primary btn-sm " href="{% url 'wireguard:index' %}" role="button"
-       aria-expanded="false">Wireguardクライアント</a>
+    <form method="post">
+        {% csrf_token %}
+        <a class="btn btn-primary btn-sm " href="{% url 'wireguard:index' %}" role="button"
+           aria-expanded="false">Wireguardクライアント</a>
+        <button type="submit" class="btn btn-primary btn-sm" name="wg_overwrite_all">全サーバ再登録</button>
+    </form>
     <br/>
     <br/>
     {% if servers %}

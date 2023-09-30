@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2 class="card-title">Wireguard(登録情報結果)</h2>
+    <br/>
+    <br/>
+    <br/>
+    {% if res %}
+        <pre><code>{{ res|safe }}</code></pre>
+        {{ json.message }}
+        <br/>
+        <br/>
+        {% for one_data in json.data %}
+            <table class="table">
+                <tr>
+                    <th scope="row" class="table-active">allowed_ips</th>
+                    <td colspan="2">{{ one_data.allowed_ips }}</td>
+                    <th scope="row" class="table-active">endpoint</th>
+                    <td colspan="2">{{ one_data.endpoint }}</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="table-active">preshared_key</th>
+                    <td colspan="2">{{ one_data.preshared_key }}</td>
+                    <th scope="row" class="table-active">public_key</th>
+                    <td colspan="2">{{ one_data.public_key }}</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="table-active">last_handshake_time</th>
+                    <td colspan="2">{{ one_data.last_handshake_time }}</td>
+                    <th scope="row" class="table-active">---</th>
+                    <td colspan="2">---</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="table-active">receive_bytes</th>
+                    <td colspan="2">{{ one_data.receive_bytes }}</td>
+                    <th scope="row" class="table-active">transmit_bytes</th>
+                    <td colspan="2">{{ one_data.transmit_bytes }}</td>
+                </tr>
+            </table>
+            <br/>
+        {% endfor %}
+
+
+    {% else %}
+        <p>取得に失敗しました</p>
+    {% endif %}
+{% endblock content %}
