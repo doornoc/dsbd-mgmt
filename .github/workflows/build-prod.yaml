@@ -30,7 +30,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: doornoc/dsbd-mgmt
-
+      - uses: docker/setup-buildx-action@v3
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
@@ -38,3 +38,5 @@ jobs:
           push: true
           tags: doornoc/dsbd-mgmt:production
           labels: "production version"
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

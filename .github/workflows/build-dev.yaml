@@ -36,3 +36,5 @@ jobs:
           push: true
           tags: doornoc/dsbd-mgmt:develop
           labels: "develop version"
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
