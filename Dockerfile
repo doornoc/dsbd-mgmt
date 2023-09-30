@@ -28,7 +28,7 @@ RUN ln -s /opt/app/static /var/www/html/static
 ADD files/default.conf /etc/nginx/sites-enabled/default
 
 #EXPOSE 80
-EXPOSE 8009
+EXPOSE 8000
 
 ADD files/entrypoint.sh /opt/app/
 CMD ["bash", "-xe", "/opt/app/entrypoint.sh"]
