@@ -28,20 +28,21 @@ def server(request):
     wireguard_server_objects = Server.objects.all()
     if request.method == 'POST':
         id = request.POST.get('id', 0)
-        server = Server.objects.get(id=int(id))
         if "wg_overwrite_all" in request.POST:
             wg_overwrite_all()
-        elif "inactive" in request.POST:
-            server.is_active = False
-            server.save()
-        elif "active" in request.POST:
-            server.is_active = True
-            server.save()
-        elif "register" in request.POST:
-            wg_overwrite(server)
-        elif "list" in request.POST:
-            res = wg_get(server)
-            return render(request, "wireguard/get.html", {'res': res, 'json': json.loads(res)})
+        else:
+            server = Server.objects.get(id=int(id))
+            if "inactive" in request.POST:
+                server.is_active = False
+                server.save()
+            elif "active" in request.POST:
+                server.is_active = True
+                server.save()
+            elif "register" in request.POST:
+                wg_overwrite(server)
+            elif "list" in request.POST:
+                res = wg_get(server)
+                return render(request, "wireguard/get.html", {'res': res, 'json': json.loads(res)})
         return redirect('/wireguard/server')
 
     paginator = Paginator(wireguard_server_objects, int(request.GET.get("per_page", "5")))

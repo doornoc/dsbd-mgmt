@@ -8,28 +8,25 @@ from django.core.serializers.json import DjangoJSONEncoder
 from mgmt.wireguard.models import Client, Server
 
 
-def wg_create(server, service):
-    url = 'http://%s:%d/api/v1/peer' % (server.mgmt_ip, server.mgmt_port)
-    ips = []
-    if service.ipv4:
-        ips.append(service.ipv4 + '/32')
-    if service.ipv6:
-        ips.append(service.ipv6 + '/128')
-    requests.post(url, data=json.dumps({
-        "public_key": service.public_key,
-        "allowed_ips": ips
-    }), headers={'Content-Type': 'application/json'})
+def wg_create(client):
+    servers = Server.objects.filter(is_active=True)
+    for server in servers:
+        url = 'http://%s:%d/api/v1/peer' % (server.mgmt_ip, server.mgmt_port)
+        requests.post(url, data=json.dumps({
+            "public_key": client.public_key,
+            "allowed_ips": [str(ipaddress.ip_address(server.start_ip) + client.count - 1) + "/32"]
+        }), headers={'Content-Type': 'application/json'})
 
 
 def wg_update(old_public_key, client):
-    servers = Server.objects.all()
+    servers = Server.objects.filter(is_active=True)
     for server in servers:
         url = 'http://%s:%d/api/v1/peer' % (server.mgmt_ip, server.mgmt_port)
         requests.put(url, data=json.dumps({
             "old_public_key": old_public_key,
             "client": {
                 "public_key": client.public_key,
-                "allowed_ips": [str(ipaddress.ip_address(server.start_ip) + client.count - 1)]
+                "allowed_ips": [str(ipaddress.ip_address(server.start_ip) + client.count - 1) + "/32"]
             },
         }), headers={'Content-Type': 'application/json'})
 
@@ -53,13 +50,13 @@ def wg_overwrite(server):
     for client in clients:
         tmp_clients.append({
             "public_key": client.public_key,
-            "allowed_ips": [str(ipaddress.ip_address(server.start_ip) + client.count - 1)]
+            "allowed_ips": [str(ipaddress.ip_address(server.start_ip) + client.count - 1) + "/32"]
         })
     requests.put(url, data=json.dumps({"clients": tmp_clients}), headers={'Content-Type': 'application/json'})
 
 
 def wg_overwrite_all():
-    servers = Server.objects.all()
+    servers = Server.objects.filter(is_active=True)
     clients = Client.objects.all()
     for server in servers:
         url = 'http://%s:%d/api/v1/peer/all' % (server.mgmt_ip, server.mgmt_port)
@@ -67,8 +64,9 @@ def wg_overwrite_all():
         for client in clients:
             tmp_clients.append({
                 "public_key": client.public_key,
-                "allowed_ips": [str(ipaddress.ip_address(server.start_ip) + client.count - 1)]
+                "allowed_ips": [str(ipaddress.ip_address(server.start_ip) + client.count - 1) + "/32"]
             })
+        print(json.dumps({"clients": tmp_clients}))
         requests.put(url, data=json.dumps({"clients": tmp_clients}), headers={'Content-Type': 'application/json'})
 
 

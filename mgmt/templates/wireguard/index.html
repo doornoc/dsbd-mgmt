@@ -25,6 +25,10 @@
                                 <th scope="row" class="table-active">Client公開鍵</th>
                                 <td colspan="2">{{ client.public_key }}</td>
                             </tr>
+                            <tr>
+                                <th scope="row" class="table-active">Comment</th>
+                                <td colspan="2">{{ client.comment }}</td>
+                            </tr>
                         </table>
                     </div>
                     {% for server in servers %}
@@ -33,10 +37,16 @@
                         <div class="table-responsive">
                             <table class="table">
                                 <tr>
-                                    <th scope="row" class="table-active">割当IP</th>
-                                    <td colspan="2">{{ server.start_ip }}</td>
                                     <th scope="row" class="table-active">EndPoint</th>
                                     <td colspan="2">{{ server.global_ip }}:{{ server.global_port }}</td>
+                                    <th scope="row" class="table-active">Comment</th>
+                                    <td colspan="2">{{ server.comment }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" class="table-active">割当IP</th>
+                                    <td colspan="2">{{ server.start_ip }}</td>
+                                    <th scope="row" class="table-active">---</th>
+                                    <td colspan="2">---</td>
                                 </tr>
                                 <tr>
                                     <th scope="row" class="table-active">サーバ状態</th>
@@ -51,7 +61,7 @@
                         <h6>Wireguardの設定例↓</h6>
                         <pre><code>
 [Interface]
-{% if server.start_ip %}Address = {% wg_v4 server.start_ip client.count %}/{{ server.size }}{% endif %}
+{% if server.start_ip %}Address = {% wg_v4 server.start_ip client.count %}/32{% endif %}
 PrivateKey = [Your Private Key]
 DNS = 1.1.1.1
 MTU = 1420

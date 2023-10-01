@@ -9,31 +9,31 @@
         {{ json.message }}
         <br/>
         <br/>
-        {% for one_data in json.data %}
+        {% for client in json.data %}
             <table class="table">
                 <tr>
                     <th scope="row" class="table-active">allowed_ips</th>
-                    <td colspan="2">{{ one_data.allowed_ips }}</td>
+                    <td colspan="2">{{ client.allowed_ips }}</td>
                     <th scope="row" class="table-active">endpoint</th>
-                    <td colspan="2">{{ one_data.endpoint }}</td>
+                    <td colspan="2">{{ client.endpoint }}</td>
                 </tr>
                 <tr>
                     <th scope="row" class="table-active">preshared_key</th>
-                    <td colspan="2">{{ one_data.preshared_key }}</td>
+                    <td colspan="2">{{ client.preshared_key }}</td>
                     <th scope="row" class="table-active">public_key</th>
-                    <td colspan="2">{{ one_data.public_key }}</td>
+                    <td colspan="2">{{ client.public_key }}</td>
                 </tr>
                 <tr>
                     <th scope="row" class="table-active">last_handshake_time</th>
-                    <td colspan="2">{{ one_data.last_handshake_time }}</td>
+                    <td colspan="2">{{ client.last_handshake_time }}</td>
                     <th scope="row" class="table-active">---</th>
                     <td colspan="2">---</td>
                 </tr>
                 <tr>
                     <th scope="row" class="table-active">receive_bytes</th>
-                    <td colspan="2">{{ one_data.receive_bytes }}</td>
+                    <td colspan="2">{{ client.receive_bytes }}</td>
                     <th scope="row" class="table-active">transmit_bytes</th>
-                    <td colspan="2">{{ one_data.transmit_bytes }}</td>
+                    <td colspan="2">{{ client.transmit_bytes }}</td>
                 </tr>
             </table>
             <br/>

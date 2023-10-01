@@ -24,6 +24,7 @@ class Server(models.Model):
     mgmt_port = models.IntegerField("Management Port", default=8080)
     private_key = models.CharField("秘密鍵", max_length=250)
     public_key = models.CharField("公開鍵", max_length=250)
+    comment = models.CharField("コメント", max_length=250, default='')
 
     class Meta:
         verbose_name = 'Wireguardサーバ'
@@ -53,6 +54,7 @@ class Client(models.Model):
     is_active = models.BooleanField("有効", default=True)
     count = models.IntegerField("count", default=init_gen_count)
     public_key = models.CharField("公開鍵", max_length=250)
+    comment = models.CharField("コメント", max_length=250, default='')
 
     objects = ServiceManager()
 
@@ -61,4 +63,4 @@ class Client(models.Model):
         verbose_name_plural = "Wireguardサービス"
 
     def __str__(self):
-        return "%d: %s" % (self.id, self.count, )
+        return "%d: %s" % (self.id, self.count,)
