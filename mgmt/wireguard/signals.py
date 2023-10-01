@@ -40,9 +40,7 @@ def create_client(sender, instance, **kwargs):
 def update_client(sender, instance, **kwargs):
     try:
         if instance.id is not None:
-            print(instance)
             prev = Client.objects.get(id=instance.id)
-            print(prev.is_active != instance.is_active, prev.public_key != instance.public_key)
             if prev.is_active != instance.is_active:
                 if instance.is_active:
                     wg_create(instance)
