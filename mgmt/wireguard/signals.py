@@ -10,6 +10,7 @@ def create_server(sender, instance, **kwargs):
     if instance.is_active:
         wg_overwrite(instance)
 
+
 @receiver(pre_save, sender=Server)
 def update_server(sender, instance, **kwargs):
     if instance.id is not None:
@@ -21,7 +22,7 @@ def update_server(sender, instance, **kwargs):
                 wg_delete_all(instance)
 
 
-@receiver(pre_delete, sender=Client)
+@receiver(pre_delete, sender=Server)
 def delete_server(sender, instance, **kwargs):
     wg_delete_all(instance)
 
@@ -29,7 +30,7 @@ def delete_server(sender, instance, **kwargs):
 @receiver(pre_save, sender=Client)
 def create_client(sender, instance, **kwargs):
     try:
-        if instance.id is None and instance.is_active:
+        if instance.is_active:
             wg_create(instance)
     except:
         print("ERROR")
@@ -39,7 +40,9 @@ def create_client(sender, instance, **kwargs):
 def update_client(sender, instance, **kwargs):
     try:
         if instance.id is not None:
+            print(instance)
             prev = Client.objects.get(id=instance.id)
+            print(prev.is_active != instance.is_active, prev.public_key != instance.public_key)
             if prev.is_active != instance.is_active:
                 if instance.is_active:
                     wg_create(instance)
@@ -52,5 +55,5 @@ def update_client(sender, instance, **kwargs):
 
 
 @receiver(pre_delete, sender=Client)
-def delete_client(sender, instance, created, **kwargs):
+def delete_client(sender, instance, **kwargs):
     wg_delete(instance.public_key)
