@@ -5,3 +5,4 @@ __pycache__/
 *$py.class
 mgmt/develop_settings.py
 *.sqlite3
+test*

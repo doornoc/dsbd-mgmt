@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2 class="card-title">Remote機器一覧</h2>
+    <a class="btn btn-primary btn-sm " href="{% url 'wireguard:server' %}" role="button"
+       aria-expanded="false" disabled="">機器情報の同期</a>
+    <a class="btn btn-primary btn-sm " href="{% url 'admin:remote_device_add' %}" role="button"
+       aria-expanded="false">機器登録</a>
+    <br/>
+    <br/>
+    {% if devices %}
+        {% for device in devices %}
+            <div class="card">
+                <div class="card-header">
+                    [{{ device.id }}] {{ device.hostname }}
+                    {% if device.is_active %}<span class="badge bg-primary">有効</span>
+                    {% else %}<span class="badge bg-danger">無効</span>{% endif %}
+                    {% time_to_str device.created_at %}
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tr>
+                                <th scope="row" class="table-active">IPアドレス</th>
+                                <td colspan="2">{{ device.address }}</td>
+                                <th scope="row" class="table-active">Category</th>
+                                <td colspan="2">{{ device.template.category1 }}/{{ device.template.category2 }}/{{ device.template.category3 }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="table-active">Config収集</th>
+                                <td colspan="2">
+                                    <a class="btn btn-primary btn-sm "
+                                       href="/admin/remote/device/{{ device.id }}/change" role="button"
+                                       aria-expanded="false">手動実行</a>
+                                <th scope="row" class="table-active">その他機能</th>
+                                <td colspan="2">
+                                    <a class="btn btn-primary btn-sm "
+                                       href="/admin/remote/device/{{ device.id }}/change" role="button"
+                                       aria-expanded="false">編集</a>
+                                    <a class="btn btn-danger btn-sm "
+                                       href="/admin/remote/device/{{ device.id }}/delete" role="button"
+                                       aria-expanded="false">削除</a>
+                                </td>
+                            </tr>
+                        </table>
+                        <a class="btn btn-primary btn-sm" href="/admin/remote/device/{{ device.id }}/change"
+                           role="button" aria-expanded="false">手動実行(Config)</a>
+                        <a class="btn btn-primary btn-sm" href="/admin/remote/device/{{ device.id }}/change"
+                           role="button" aria-expanded="false">リモートアクセス</a></td>
+                        <a class="btn btn-primary btn-sm" href="/admin/remote/device/{{ device.id }}/change"
+                           role="button" aria-expanded="false">編集</a>
+                        <a class="btn btn-danger btn-sm" href="/admin/remote/device/{{ device.id }}/delete"
+                           role="button" aria-expanded="false">削除</a>
+                    </div>
+                </div>
+            </div>
+            <br/>
+        {% endfor %}
+        <nav aria-label="...">
+            <ul class="pagination">
+                {% if devices.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="?{% url_replace request page=devices.previous_page_number %}">前へ</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">前へ</span>
+                    </li>
+                {% endif %}
+                {% if devices.paginator.num_pages > 10 %}
+                    {% if devices.number < 6 %}
+                        {#    先頭 9 ページの表示      #}
+                        {% for pg in devices.paginator.page_range %}
+                            {% if forloop.counter0 < 9 %}
+                                {% if devices.number == pg %}
+                                    <li class="page-item active">
+                                        {% else %}
+                                    <li class="page-item">
+                                {% endif %}
+                            <a class="page-link" href="?{% url_replace request page=pg %}">{{ pg }}</a>
+                            </li>
+                            {% endif %}
+                        {% endfor %}
+                    {% elif devices.number < devices.paginator.num_pages|add:-4 %}
+                        {#    手前 4 ページ | 現在のページ | 続き 4 ページ      #}
+                        {% for pg in devices.paginator.page_range %}
+                            {% if devices.number|add:-5 < pg and pg < devices.number|add:5 %}
+                                {% if devices.number == pg %}
+                                    <li class="page-item active">
+                                        {% else %}
+                                    <li class="page-item">
+                                {% endif %}
+                            <a class="page-link" href="?{% url_replace request page=pg %}">{{ pg }}</a>
+                            </li>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        {#   最後 9 ページの表示   #}
+                        {% for pg in devices.paginator.page_range %}
+                            {% if forloop.counter0 > devices.paginator.num_pages|add:-10 %}
+                                {% if devices.number == pg %}
+                                    <li class="page-item active">
+                                        {% else %}
+                                    <li class="page-item">
+                                {% endif %}
+                            <a class="page-link" href="?{% url_replace request page=pg %}">{{ pg }}</a>
+                            </li>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% else %}
+                    {% for pg in devices.paginator.page_range %}
+                        {% if devices.number == pg %}
+                            <li class="page-item active">
+                                {% else %}
+                            <li class="page-item">
+                        {% endif %}
+                    <a class="page-link" href="?{% url_replace request page=pg %}">{{ pg }}</a>
+                    </li>
+                    {% endfor %}
+                {% endif %}
+                {% if devices.has_next %}
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="?{% url_replace request page=devices.next_page_number %}">次へ</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">次へ</span>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% else %}
+        <p>登録されているデバイスがありｍせん</p>
+    {% endif %}
+{% endblock content %}

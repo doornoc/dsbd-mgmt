@@ -25,6 +25,7 @@ urlpatterns = [
     path("sign_in/", views.sign_in, name="sign_in"),
     path("sign_out/", views.sign_out, name="sign_out"),
     path("sign_up/", views.sign_up, name="sign_up"),
+    path("remote/", include("mgmt.remote.urls")),
     path("wireguard/", include("mgmt.wireguard.urls")),
     path("profile/", include("mgmt.custom_auth.urls")),
     path('admin/login/', views.admin_sign_in, name='admin_sign_in'),
