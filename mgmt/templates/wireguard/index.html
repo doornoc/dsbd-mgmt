@@ -1,74 +1,82 @@
-{% extends 'base.html' %}
+{% extends 'base2.html' %}
 {% block content %}
-    <h2 class="card-title">サービス一覧</h2>
-    <a class="btn btn-primary btn-sm " href="{% url 'wireguard:server' %}" role="button"
-       aria-expanded="false">Wireguardサーバ</a>
-    <a class="btn btn-primary btn-sm " href="{% url 'admin:wireguard_server_add' %}" role="button"
-       aria-expanded="false">サーバ登録</a>
-    <a class="btn btn-primary btn-sm " href="{% url 'admin:wireguard_client_add' %}" role="button"
-       aria-expanded="false">クライアント登録</a>
-    <br/>
-    <br/>
-    {% if clients %}
-        {% for client in clients %}
-            <div class="card">
-                <div class="card-header">
-                    {% if client.is_active %}<span class="badge bg-primary">有効</span>
-                    {% else %}<span class="badge bg-danger">無効</span>{% endif %}
-                    {% time_to_str client.created_at %}
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table">
-                            <tr>
-                                <th scope="row" class="table-active">Client公開鍵</th>
-                                <td colspan="2">{{ client.public_key }}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row" class="table-active">Comment</th>
-                                <td colspan="2">{{ client.comment }}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row" class="table-active">各種機能</th>
-                                <td colspan="2">
-                                    <a class="btn btn-primary btn-sm "
-                                       href="/admin/wireguard/client/{{ client.id }}/change" role="button"
-                                       aria-expanded="false">編集</a>
-                                    <a class="btn btn-danger btn-sm "
-                                       href="/admin/wireguard/client/{{ client.id }}/delete" role="button"
-                                       aria-expanded="false">削除</a>
-                            </tr>
-                        </table>
-                    </div>
-                    {% for server in servers %}
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <tr>
-                                            <th scope="row" class="table-active">EndPoint</th>
-                                            <td colspan="2">{{ server.global_ip }}:{{ server.global_port }}</td>
-                                            <th scope="row" class="table-active">Comment</th>
-                                            <td colspan="2">{{ server.comment }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row" class="table-active">割当IP</th>
-                                            <td colspan="2">{% wg_v4 server.start_ip client.count %}/32</td>
-                                            <th scope="row" class="table-active">---</th>
-                                            <td colspan="2">---</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row" class="table-active">サーバ状態</th>
-                                            <td colspan="2">{% if server.is_active %}
-                                                <span class="badge bg-success">動作中</span>
-                                            {% else %}<span class="badge bg-danger">停止中</span>{% endif %}</td>
-                                            <th scope="row" class="table-active">Server公開鍵</th>
-                                            <td colspan="2">{{ server.public_key }}</td>
-                                        </tr>
-                                    </table>
+    <div class="container">
+        <div class="row">
+            <div class="container py-4 mb-auto">
+                <div class="h-900 p-2 rounded-3">
+                    <h2>サービス一覧</h2>
+                    <a class="btn btn-primary btn-sm " href="{% url 'wireguard:server' %}" role="button"
+                       aria-expanded="false">Wireguardサーバ</a>
+                    <a class="btn btn-primary btn-sm " href="{% url 'admin:wireguard_server_add' %}" role="button"
+                       aria-expanded="false">サーバ登録</a>
+                    <a class="btn btn-primary btn-sm " href="{% url 'admin:wireguard_client_add' %}" role="button"
+                       aria-expanded="false">クライアント登録</a>
+                    <br/>
+                    <br/>
+                    {% if clients %}
+                        {% for client in clients %}
+                            <div class="card">
+                                <div class="card-header">
+                                    {% if client.is_active %}<span class="badge bg-primary">有効</span>
+                                    {% else %}<span class="badge bg-danger">無効</span>{% endif %}
+                                    {% time_to_str client.created_at %}
                                 </div>
-                                <h6>Wireguardの設定例↓</h6>
-                                <pre><code>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <tr>
+                                                <th scope="row" class="table-active">Client公開鍵</th>
+                                                <td colspan="2">{{ client.public_key }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="table-active">Comment</th>
+                                                <td colspan="2">{{ client.comment }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="table-active">各種機能</th>
+                                                <td colspan="2">
+                                                    <a class="btn btn-primary btn-sm "
+                                                       href="/admin/wireguard/client/{{ client.id }}/change"
+                                                       role="button"
+                                                       aria-expanded="false">編集</a>
+                                                    <a class="btn btn-danger btn-sm "
+                                                       href="/admin/wireguard/client/{{ client.id }}/delete"
+                                                       role="button"
+                                                       aria-expanded="false">削除</a>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    {% for server in servers %}
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table class="table">
+                                                        <tr>
+                                                            <th scope="row" class="table-active">EndPoint</th>
+                                                            <td colspan="2">{{ server.global_ip }}:{{ server.global_port }}</td>
+                                                            <th scope="row" class="table-active">Comment</th>
+                                                            <td colspan="2">{{ server.comment }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row" class="table-active">割当IP</th>
+                                                            <td colspan="2">{% wg_v4 server.start_ip client.count %}/32</td>
+                                                            <th scope="row" class="table-active">---</th>
+                                                            <td colspan="2">---</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row" class="table-active">サーバ状態</th>
+                                                            <td colspan="2">{% if server.is_active %}
+                                                                <span class="badge bg-success">動作中</span>
+                                                            {% else %}
+                                                                <span class="badge bg-danger">停止中</span>{% endif %}
+                                                            </td>
+                                                            <th scope="row" class="table-active">Server公開鍵</th>
+                                                            <td colspan="2">{{ server.public_key }}</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                <h6>Wireguardの設定例↓</h6>
+                                                <pre><code>
 [Interface]
 Address = {% wg_v4 server.start_ip client.count %}/32
 PrivateKey = [Your Private Key]
@@ -80,90 +88,94 @@ PublicKey = {{ server.public_key }}
 AllowedIPs = {{ wireguard.allowed_ips }}
 Endpoint = {{ server.global_ip }}:{{ server.global_port }}
 </code></pre>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
                             </div>
-                        </div>
-                    {% endfor %}
+                            <br/>
+                        {% endfor %}
+                        <nav aria-label="...">
+                            <ul class="pagination">
+                                {% if clients.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                           href="?{% url_replace request page=clients.previous_page_number %}">前へ</a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item disabled">
+                                        <span class="page-link">前へ</span>
+                                    </li>
+                                {% endif %}
+                                {% if clients.paginator.num_pages > 10 %}
+                                    {% if clients.number < 6 %}
+                                        {#    先頭 9 ページの表示      #}
+                                        {% for pg in clients.paginator.page_range %}
+                                            {% if forloop.counter0 < 9 %}
+                                                {% if clients.number == pg %}
+                                                    <li class="page-item active">
+                                                        {% else %}
+                                                    <li class="page-item">
+                                                {% endif %}
+                                            <a class="page-link" href="?{% url_replace request page=pg %}">{{ pg }}</a>
+                                            </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% elif clients.number < clients.paginator.num_pages|add:-4 %}
+                                        {#    手前 4 ページ | 現在のページ | 続き 4 ページ      #}
+                                        {% for pg in clients.paginator.page_range %}
+                                            {% if clients.number|add:-5 < pg and pg < clients.number|add:5 %}
+                                                {% if clients.number == pg %}
+                                                    <li class="page-item active">
+                                                        {% else %}
+                                                    <li class="page-item">
+                                                {% endif %}
+                                            <a class="page-link" href="?{% url_replace request page=pg %}">{{ pg }}</a>
+                                            </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% else %}
+                                        {#   最後 9 ページの表示   #}
+                                        {% for pg in clients.paginator.page_range %}
+                                            {% if forloop.counter0 > clients.paginator.num_pages|add:-10 %}
+                                                {% if clients.number == pg %}
+                                                    <li class="page-item active">
+                                                        {% else %}
+                                                    <li class="page-item">
+                                                {% endif %}
+                                            <a class="page-link" href="?{% url_replace request page=pg %}">{{ pg }}</a>
+                                            </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                {% else %}
+                                    {% for pg in clients.paginator.page_range %}
+                                        {% if clients.number == pg %}
+                                            <li class="page-item active">
+                                                {% else %}
+                                            <li class="page-item">
+                                        {% endif %}
+                                    <a class="page-link" href="?{% url_replace request page=pg %}">{{ pg }}</a>
+                                    </li>
+                                    {% endfor %}
+                                {% endif %}
+                                {% if clients.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                           href="?{% url_replace request page=clients.next_page_number %}">次へ</a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item disabled">
+                                        <span class="page-link">次へ</span>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    {% else %}
+                        <p>登録されているクライアントがありません</p>
+                    {% endif %}
                 </div>
             </div>
-            <br/>
-        {% endfor %}
-        <nav aria-label="...">
-            <ul class="pagination">
-                {% if clients.has_previous %}
-                    <li class="page-item">
-                        <a class="page-link"
-                           href="?{% url_replace request page=clients.previous_page_number %}">前へ</a>
-                    </li>
-                {% else %}
-                    <li class="page-item disabled">
-                        <span class="page-link">前へ</span>
-                    </li>
-                {% endif %}
-                {% if clients.paginator.num_pages > 10 %}
-                    {% if clients.number < 6 %}
-                        {#    先頭 9 ページの表示      #}
-                        {% for pg in clients.paginator.page_range %}
-                            {% if forloop.counter0 < 9 %}
-                                {% if clients.number == pg %}
-                                    <li class="page-item active">
-                                        {% else %}
-                                    <li class="page-item">
-                                {% endif %}
-                            <a class="page-link" href="?{% url_replace request page=pg %}">{{ pg }}</a>
-                            </li>
-                            {% endif %}
-                        {% endfor %}
-                    {% elif clients.number < clients.paginator.num_pages|add:-4 %}
-                        {#    手前 4 ページ | 現在のページ | 続き 4 ページ      #}
-                        {% for pg in clients.paginator.page_range %}
-                            {% if clients.number|add:-5 < pg and pg < clients.number|add:5 %}
-                                {% if clients.number == pg %}
-                                    <li class="page-item active">
-                                        {% else %}
-                                    <li class="page-item">
-                                {% endif %}
-                            <a class="page-link" href="?{% url_replace request page=pg %}">{{ pg }}</a>
-                            </li>
-                            {% endif %}
-                        {% endfor %}
-                    {% else %}
-                        {#   最後 9 ページの表示   #}
-                        {% for pg in clients.paginator.page_range %}
-                            {% if forloop.counter0 > clients.paginator.num_pages|add:-10 %}
-                                {% if clients.number == pg %}
-                                    <li class="page-item active">
-                                        {% else %}
-                                    <li class="page-item">
-                                {% endif %}
-                            <a class="page-link" href="?{% url_replace request page=pg %}">{{ pg }}</a>
-                            </li>
-                            {% endif %}
-                        {% endfor %}
-                    {% endif %}
-                {% else %}
-                    {% for pg in clients.paginator.page_range %}
-                        {% if clients.number == pg %}
-                            <li class="page-item active">
-                                {% else %}
-                            <li class="page-item">
-                        {% endif %}
-                    <a class="page-link" href="?{% url_replace request page=pg %}">{{ pg }}</a>
-                    </li>
-                    {% endfor %}
-                {% endif %}
-                {% if clients.has_next %}
-                    <li class="page-item">
-                        <a class="page-link"
-                           href="?{% url_replace request page=clients.next_page_number %}">次へ</a>
-                    </li>
-                {% else %}
-                    <li class="page-item disabled">
-                        <span class="page-link">次へ</span>
-                    </li>
-                {% endif %}
-            </ul>
-        </nav>
-    {% else %}
-        <p>登録されているクライアントがありません</p>
-    {% endif %}
+        </div>
+    </div>
 {% endblock content %}

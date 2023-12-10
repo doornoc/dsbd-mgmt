@@ -1,0 +1,166 @@
+{% load static %}
+
+<style>
+    body {
+        min-height: 100vh;
+    }
+
+    /* html {
+    } */
+
+    main {
+        display: flex;
+        flex-wrap: nowrap;
+        height: 100vh;
+        max-height: 100vh;
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+
+    /* アイコンの位置 */
+    .bi {
+        vertical-align: -.125em;
+        pointer-events: none;
+        fill: currentColor;
+    }
+
+    .submenu-logo {
+        margin-top: 3px;
+    }
+
+    /* アイコンの位置 */
+    .dropdown-toggle {
+        outline: 0;
+    }
+
+    .nav-flush .nav-link {
+        border-radius: 0;
+    }
+
+    /* purudownで出る位置 */
+    .btn-toggle-nav a {
+        display: inline-flex;
+        padding: .1875rem .5rem;
+        margin-top: .25rem;
+        margin-left: 2.5rem;
+        text-decoration: none;
+    }
+
+    .btn-toggle-nav a:hover,
+    .btn-toggle-nav a:focus {
+        background-color: #d2f4ea;
+    }
+</style>
+
+<main>
+    <h1 class="visually-hidden">doornoc mgmt</h1>
+
+    <div class="overflow-auto d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px;">
+        <a href="{% url 'index' %}"
+           class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+            <img src="{% static 'icon/icon.png' %}" alt="Sakura Logo" class="bi me-2"
+                 width="40" height="40">
+            <span class="fs-4">Remote Tool</span>
+        </a>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+                <a href="{% url 'index' %}" class="nav-link text-white" aria-current="page">
+                    <svg class="bi me-2" width="16" height="16">
+                        <use xlink:href="#home"></use>
+                    </svg>
+                    Home
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'device:index' %}" class="nav-link text-white" aria-current="page">
+                    <svg class="bi me-2" width="16" height="16">
+                        <use xlink:href="#switch-logo"></use>
+                    </svg>
+                    Device
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'index' %}" class="nav-link text-white" aria-current="page">
+                    <svg class="bi me-2" width="16" height="16">
+                        <use xlink:href="#server-logo"></use>
+                    </svg>
+                    Remote
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'wireguard:index' %}" class="nav-link text-white" aria-current="page">
+                    <svg class="bi me-2" width="16" height="16">
+                        <use xlink:href="#device-remote"></use>
+                    </svg>
+                    Wireguard
+                </a>
+            </li>
+            {% if request.user.is_staff %}
+                <li class="nav-item">
+                    <a class="btn text-white align-items-center rounded collapsed" data-bs-toggle="collapse"
+                            data-bs-target="#admin-collapse" aria-expanded="false">
+                        <svg class="bi me-2" width="16" height="16">
+                            <use xlink:href="#administrator"></use>
+                        </svg>
+                        Admin Page
+                    </a>
+{#                    <div class="collapse" id="admin-collapse">#}
+{#                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">#}
+{#                            <li>#}
+{#                                <a href="{% url 'admin:index' %}" class="nav-link text-white">#}
+{#                                    <svg class="bi me-2" width="16" height="16">#}
+{#                                        <use xlink:href="#database"></use>#}
+{#                                    </svg>#}
+{#                                    Admin(DB)#}
+{#                                </a>#}
+{#                            </li>#}
+{#                        </ul>#}
+{#                    </div>#}
+                </li>
+            {% endif %}
+        </ul>
+        <ul class="nav nav-pills flex-column">
+            <li class="nav-item">
+                <button onclick="navbar_close()" class="nav-link text-white" aria-current="page">
+                    <svg class="bi me-2" width="16" height="16">
+                        <use xlink:href="#bar-left"></use>
+                    </svg>
+                    閉じる
+                </button>
+            </li>
+        </ul>
+        <br/>
+        <h6><span class="badge bg-secondary">Version: {% get_version %}</span></h6>
+        <hr>
+        <div class="dropdown">
+            <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+               id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                <strong>{{ user.username }}</strong>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                <li><a class="dropdown-item" href="{% url 'custom_auth:index' %}">Profile</a></li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="{% url 'sign_out' %}" role="button">Sign out</a></li>
+            </ul>
+        </div>
+    </div>
+</main>
+
+<script>
+    (function () {
+        'use strict'
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+            new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    })()
+
+    function navbar_close() {
+        Cookies.set('navbar_open', false);
+        document.getElementById('sidebar-open').style.display = 'none'
+        document.getElementById('sidebar-close').style.display = 'block'
+    }
+</script>

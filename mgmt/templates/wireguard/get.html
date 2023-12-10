@@ -1,46 +1,54 @@
-{% extends 'base.html' %}
+{% extends 'base2.html' %}
 {% block content %}
-    <h2 class="card-title">Wireguard(登録情報結果)</h2>
-    <br/>
-    <br/>
-    <br/>
-    {% if res %}
-        <pre><code>{{ res|safe }}</code></pre>
-        {{ json.message }}
-        <br/>
-        <br/>
-        {% for client in json.data %}
-            <table class="table">
-                <tr>
-                    <th scope="row" class="table-active">allowed_ips</th>
-                    <td colspan="2">{{ client.allowed_ips }}</td>
-                    <th scope="row" class="table-active">endpoint</th>
-                    <td colspan="2">{{ client.endpoint }}</td>
-                </tr>
-                <tr>
-                    <th scope="row" class="table-active">preshared_key</th>
-                    <td colspan="2">{{ client.preshared_key }}</td>
-                    <th scope="row" class="table-active">public_key</th>
-                    <td colspan="2">{{ client.public_key }}</td>
-                </tr>
-                <tr>
-                    <th scope="row" class="table-active">last_handshake_time</th>
-                    <td colspan="2">{{ client.last_handshake_time }}</td>
-                    <th scope="row" class="table-active">---</th>
-                    <td colspan="2">---</td>
-                </tr>
-                <tr>
-                    <th scope="row" class="table-active">receive_bytes</th>
-                    <td colspan="2">{{ client.receive_bytes }}</td>
-                    <th scope="row" class="table-active">transmit_bytes</th>
-                    <td colspan="2">{{ client.transmit_bytes }}</td>
-                </tr>
-            </table>
-            <br/>
-        {% endfor %}
+    <div class="container">
+        <div class="row">
+            <div class="container py-4 mb-auto">
+                <div class="h-900 p-2 rounded-3">
+                    <h2>Wireguard(登録情報結果)</h2>
+                    <br/>
+                    <br/>
+                    <br/>
+                    {% if res %}
+                        <pre><code>{{ res|safe }}</code></pre>
+                        {{ json.message }}
+                        <br/>
+                        <br/>
+                        {% for client in json.data %}
+                            <table class="table">
+                                <tr>
+                                    <th scope="row" class="table-active">allowed_ips</th>
+                                    <td colspan="2">{{ client.allowed_ips }}</td>
+                                    <th scope="row" class="table-active">endpoint</th>
+                                    <td colspan="2">{{ client.endpoint }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" class="table-active">preshared_key</th>
+                                    <td colspan="2">{{ client.preshared_key }}</td>
+                                    <th scope="row" class="table-active">public_key</th>
+                                    <td colspan="2">{{ client.public_key }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" class="table-active">last_handshake_time</th>
+                                    <td colspan="2">{{ client.last_handshake_time }}</td>
+                                    <th scope="row" class="table-active">---</th>
+                                    <td colspan="2">---</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" class="table-active">receive_bytes</th>
+                                    <td colspan="2">{{ client.receive_bytes }}</td>
+                                    <th scope="row" class="table-active">transmit_bytes</th>
+                                    <td colspan="2">{{ client.transmit_bytes }}</td>
+                                </tr>
+                            </table>
+                            <br/>
+                        {% endfor %}
 
 
-    {% else %}
-        <p>取得に失敗しました</p>
-    {% endif %}
+                    {% else %}
+                        <p>取得に失敗しました</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock content %}

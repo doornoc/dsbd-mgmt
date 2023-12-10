@@ -1,0 +1,131 @@
+{% load static %}
+
+<style>
+    body {
+        min-height: 80vh;
+    }
+
+    /* html {
+    } */
+
+    main {
+        display: flex;
+        flex-wrap: nowrap;
+        height: 100vh;
+        max-height: 100vh;
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+
+    /* アイコンの位置 */
+    .bi {
+        vertical-align: -.125em;
+        pointer-events: none;
+        fill: currentColor;
+    }
+
+    /* アイコンの位置 */
+    .dropdown-toggle {
+        outline: 0;
+    }
+
+    .nav-flush .nav-link {
+        border-radius: 0;
+    }
+
+    /* dropdownで出る位置 */
+    .btn-toggle-nav a {
+        display: inline-flex;
+        padding: .1875rem .5rem;
+        margin-top: .25rem;
+        margin-left: 2.5rem;
+        text-decoration: none;
+    }
+
+    .btn-toggle-nav a:hover,
+    .btn-toggle-nav a:focus {
+        background-color: #d2f4ea;
+    }
+</style>
+
+
+<main>
+    <h1 class="visually-hidden">doornoc mgmt</h1>
+
+    <div class="overflow-auto d-flex flex-column flex-shrink-0 text-white bg-dark" style="width: 80px;">
+        <a href="/" class="d-block p-3 link-body-emphasis text-decoration-none" title="Icon-only"
+           data-bs-toggle="tooltip">
+            <img src="{% static 'icon/icon.png' %}" alt="" class="bi me-2" width="40" height="40">
+        </a>
+        <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
+            <li class="nav-item">
+                <a href="{% url "index" %}" class="nav-link text-white py-3 border-bottom rounded-0" aria-current="page"
+                   title="Home"
+                   data-bs-toggle="tooltip">
+                    <svg class="bi pe-none" width="24" height="24" role="img" aria-label="Home">
+                        <use xlink:href="#home"></use>
+                    </svg>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url "device:index" %}" class="nav-link text-white py-3 border-bottom rounded-0"
+                   title="Device"
+                   data-bs-toggle="tooltip">
+                    <svg class="bi pe-none" width="24" height="24" role="img" aria-label="Device">
+                        <use xlink:href="#switch-logo"></use>
+                    </svg>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url "index" %}" class="nav-link text-white py-3 border-bottom rounded-0" title="Remote"
+                   data-bs-toggle="tooltip">
+                    <svg class="bi pe-none" width="24" height="24" role="img" aria-label="Remote">
+                        <use xlink:href="#server-logo"></use>
+                    </svg>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url "wireguard:index" %}" class="nav-link text-white py-3 border-bottom rounded-0"
+                   title="Wireguard" data-bs-toggle="tooltip">
+                    <svg class="bi pe-none" width="24" height="24" role="img" aria-label="Wireguard">
+                        <use xlink:href="#device-remote"></use>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+        <ul class="nav nav-pills flex-column">
+            <li class="nav-item">
+                <button onclick="navbar_open()" class="nav-link text-white" aria-current="page">
+                    <svg class="bi me-2" width="24" height="24">
+                        <use xlink:href="#bar-right"></use>
+                    </svg>
+                </button>
+            </li>
+        </ul>
+        <div class="dropdown border-top">
+            <a onclick="navbar_open()"
+               class="d-flex align-items-center justify-content-center p-3 link-body-emphasis dropdown-toggle text-white"
+               data-bs-toggle="dropdown" aria-expanded="false">
+                <svg class="bi pe-none" width="24" height="24" role="img" aria-label="Device">
+                    <use xlink:href="#user"></use>
+                </svg>
+            </a>
+        </div>
+    </div>
+</main>
+
+<script>
+    (function () {
+        'use strict'
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+            new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    })()
+
+    function navbar_open() {
+        Cookies.set('navbar_open', true);
+        document.getElementById('sidebar-open').style.display = 'block'
+        document.getElementById('sidebar-close').style.display = 'none'
+    }
+</script>

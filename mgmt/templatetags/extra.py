@@ -54,3 +54,9 @@ def debug():
 @register.simple_tag
 def array_to_str(data):
     return ', '.join(data)
+
+
+@register.simple_tag
+def get_version():
+    version = "develop"
+    return version
